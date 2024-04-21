@@ -3,12 +3,14 @@ using CinemaBackend.Models;
 using CinemaBackend.Models.DTOs.CustomerDTOs;
 using CinemaBackend.Models.DTOs.MovieDTOs;
 using CinemaBackend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class MovieController : ControllerBase
     {
         private IMovieService _movieService;
@@ -71,7 +73,29 @@ namespace CinemaBackend.Controllers
             }
         }
 
+        [HttpGet("Title/{movieTitle}")]
+        public async Task<ActionResult<MovieDto>> GetMovieByTitle(String movieTitle)
+        {
+            try
+            {
+                Movie movie = await _movieService.GetMovieByTitle(movieTitle);
+
+                if (movie == null)
+                    return NotFound();
+
+                MovieDto movieDto = _mapper.Map<MovieDto>(movie);
+
+                return Ok(movieDto);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         [HttpPost]
+        [Authorize (Roles = "Worker")]
         public async Task<ActionResult<MovieDto>> CreateMovie(MovieCreateDto movie)
         {
             try
@@ -94,6 +118,7 @@ namespace CinemaBackend.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Worker")]
         public async Task<ActionResult<MovieDto>> UpdateMovie(MovieUpdateDto movie)
         {
             try
@@ -113,6 +138,7 @@ namespace CinemaBackend.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Worker")]
         public async Task<ActionResult> DeleteMovie(Guid movieId)
         {
             try

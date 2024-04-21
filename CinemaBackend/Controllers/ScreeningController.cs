@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CinemaBackend.Models.DTOs.ScreeningDTOs;
 using CinemaBackend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaBackend.Controllers
@@ -67,7 +68,29 @@ namespace CinemaBackend.Controllers
             }
         }
 
+        [HttpGet("Date/{screeningDate}")]
+        public async Task<ActionResult<ScreeningDto>> GetScreeningByDate(DateOnly screeningDate)
+        {
+            try
+            {
+                Screening screening = await _screeningService.GetScreeningByDate(screeningDate);
+
+                if (screening == null)
+                    return NotFound();
+
+                ScreeningDto screeningDto = _mapper.Map<ScreeningDto>(screening);
+
+                return Ok(screeningDto);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         [HttpPost]
+        [Authorize(Roles = "Worker")]
         public async Task<ActionResult<ScreeningDto>> CreateScreening(ScreeningCreateDto screening)
         {
             try
@@ -90,6 +113,7 @@ namespace CinemaBackend.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Worker")]
         public async Task<ActionResult<ScreeningDto>> UpdateScreening(ScreeningUpdateDto screening)
         {
             try
@@ -109,6 +133,7 @@ namespace CinemaBackend.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Worker")]
         public async Task<ActionResult> DeleteScreening(Guid screeningId)
         {
             try

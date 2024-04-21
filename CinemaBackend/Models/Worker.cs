@@ -11,6 +11,8 @@ public partial class Worker
 
     public string WorkerEmailAdress { get; set; } = null!;
 
+    public string WorkerPasswordHash { get; set; } = null!;
+
     public string WorkerPhoneNumber { get; set; } = null!;
 
     public decimal? WorkerSalary { get; set; }

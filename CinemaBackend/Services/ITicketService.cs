@@ -6,7 +6,7 @@ namespace CinemaBackend.Services
     {
 
         Task<List<Ticket>> GetTickets();
-        Task<Ticket> GetTicketById(Guid workerId);
+        Task<Ticket> GetTicketById(Guid ticketId);
         Task<Ticket> CreateTicket(Ticket ticket);
         Task<Ticket> UpdateTicket(Ticket ticket);
         Task DeleteTicket(Guid ticketId);

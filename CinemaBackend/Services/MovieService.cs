@@ -42,6 +42,24 @@ namespace CinemaBackend.Services
             }
         }
 
+        public async Task<Movie> GetMovieByTitle(String movieTitle)
+        {
+            try
+            {
+                Movie? search = await _dbContext.Movies.FirstOrDefaultAsync(w => w.MovieTitle == movieTitle);
+
+                if (search == null)
+                    throw new KeyNotFoundException();
+
+                return search;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public async Task<Movie> CreateMovie(Movie movie)
         {
             var createdMovie = await _dbContext.AddAsync(movie);

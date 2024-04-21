@@ -42,6 +42,24 @@ namespace CinemaBackend.Services
             }
         }
 
+        public async Task<Screening> GetScreeningByDate(DateOnly screeningDate)
+        {
+            try
+            {
+                Screening? search = await _dbContext.Screenings.Include(s => s.Tickets).FirstOrDefaultAsync(w => w.ScreeningDate == screeningDate);
+
+                if (search == null)
+                    return null!;
+
+                return search;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public async Task<Screening> CreateScreening(Screening screening)
         {
             var createdScreening = await _dbContext.AddAsync(screening);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CinemaBackend.Models.DTOs.CustomerDTOs;
 using CinemaBackend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity.Infrastructure;
 
@@ -8,6 +9,7 @@ namespace CinemaBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Worker")]
     public class CustomerController : ControllerBase
     {
         private ICustomerService _customerService;
@@ -54,6 +56,28 @@ namespace CinemaBackend.Controllers
             try
             {
                 Customer customer = await _customerService.GetCustomerById(customerId);
+
+                if (customer == null)
+                    return NotFound();
+
+                CustomerDto customerDto = _mapper.Map<CustomerDto>(customer);
+
+                return Ok(customerDto);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        [HttpGet("Email/{customerEmail}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<CustomerDto>> GetCustomerByEmail(String customerEmail)
+        {
+            try
+            {
+                Customer customer = await _customerService.GetCustomerByEmail(customerEmail);
 
                 if (customer == null)
                     return NotFound();

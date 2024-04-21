@@ -8,6 +8,7 @@ namespace CinemaBackend.Services
 
         Task<List<Customer>> GetCustomers();
         Task<Customer> GetCustomerById(Guid customerId);
+        Task<Customer> GetCustomerByEmail(String customerEmail);
         Task<Customer> CreateCustomer(Customer customer);
         Task<Customer> UpdateCustomer(Customer customer);
         Task DeleteCustomer(Guid customerId);

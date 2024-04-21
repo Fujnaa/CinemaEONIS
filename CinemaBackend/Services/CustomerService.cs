@@ -9,12 +9,10 @@ namespace CinemaBackend.Services
     {
 
         private CinemaDatabaseContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public CustomerService(CinemaDatabaseContext dbContext, IMapper mapper)
+        public CustomerService(CinemaDatabaseContext dbContext)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
         }
 
         public async Task<List<Customer>> GetCustomers()
@@ -48,8 +46,30 @@ namespace CinemaBackend.Services
             }
         }
 
+        public async Task<Customer> GetCustomerByEmail(String customerEmail)
+        {
+            try
+            {
+                Customer? search = await _dbContext.Customers.FirstOrDefaultAsync(w => w.CustomerEmailAdress == customerEmail);
+
+                if (search == null)
+                    return null!;
+
+                return search;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public async Task<Customer> CreateCustomer(Customer customer)
         {
+
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(customer.CustomerPasswordHash);
+
+            customer.CustomerPasswordHash = passwordHash;
 
             var createdCustomer = await _dbContext.AddAsync(customer);
 
@@ -72,8 +92,6 @@ namespace CinemaBackend.Services
                 toUpdate.CustomerEmailAdress = customer.CustomerEmailAdress;
                 toUpdate.CustomerPhoneNumber = customer.CustomerPhoneNumber;
                 toUpdate.CustomerMembershipLevel = customer.CustomerMembershipLevel;
-
-                toUpdate.CustomerId = customer.CustomerId;
 
                 await _dbContext.SaveChangesAsync();
 

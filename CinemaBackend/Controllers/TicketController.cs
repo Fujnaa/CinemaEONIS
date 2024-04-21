@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using CinemaBackend.Models.DTOs.TicketDTOs;
 using CinemaBackend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TicketController : ControllerBase
     {
         private ITicketService _ticketService;
@@ -19,6 +21,7 @@ namespace CinemaBackend.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<List<TicketDto>>> GetTickets()
         {
             try

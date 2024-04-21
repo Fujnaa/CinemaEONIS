@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using CinemaBackend.Models.DTOs.WorkerDTOs;
 using CinemaBackend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaBackend.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize(Roles = "Worker")]
     public class WorkerController : ControllerBase
     {
         private IWorkerService _workerService;
@@ -60,6 +63,27 @@ namespace CinemaBackend.Controllers
                 return Ok(workerDto);
 
             } catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        [HttpGet("Email/{workerEmail}")]
+        public async Task<ActionResult<WorkerDto>> GetWorkerByEmail(String workerEmail)
+        {
+            try
+            {
+                Worker worker = await _workerService.GetWorkerByEmail(workerEmail);
+
+                if (worker == null)
+                    return NotFound();
+
+                WorkerDto workerDto = _mapper.Map<WorkerDto>(worker);
+
+                return Ok(workerDto);
+
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex);
             }

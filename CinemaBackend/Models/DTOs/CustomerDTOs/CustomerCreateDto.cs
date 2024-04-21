@@ -6,6 +6,8 @@
 
         public string CustomerEmailAdress { get; set; } = null!;
 
+        public string CustomerPasswordHash { get; set; } = null!;
+
         public string? CustomerPhoneNumber { get; set; }
 
         public string CustomerMembershipLevel { get; set; } = null!;

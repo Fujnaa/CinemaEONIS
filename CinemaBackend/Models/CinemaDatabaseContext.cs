@@ -6,12 +6,13 @@ namespace CinemaBackend.Models;
 
 public partial class CinemaDatabaseContext : DbContext
 {
-
-    private readonly IConfiguration _configuration;
-
-    public CinemaDatabaseContext(DbContextOptions<CinemaDatabaseContext> options, IConfiguration configuration) : base(options)
+    public CinemaDatabaseContext()
     {
-        _configuration = configuration;
+    }
+
+    public CinemaDatabaseContext(DbContextOptions<CinemaDatabaseContext> options)
+        : base(options)
+    {
     }
 
     public virtual DbSet<Customer> Customers { get; set; }
@@ -25,7 +26,8 @@ public partial class CinemaDatabaseContext : DbContext
     public virtual DbSet<Worker> Workers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(_configuration.GetConnectionString("CinemaDatabase"));
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-C9UMCB2\\SQLEXPRESS;Database=CinemaDatabase;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,9 +39,7 @@ public partial class CinemaDatabaseContext : DbContext
 
             entity.HasIndex(e => e.CustomerPhoneNumber, "UQ_Customer_CustomerPhoneNumber").IsUnique();
 
-            entity.Property(e => e.CustomerId)
-                .HasMaxLength(36)
-                .IsUnicode(false);
+            entity.Property(e => e.CustomerId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.CustomerEmailAdress)
                 .HasMaxLength(30)
                 .IsUnicode(false);
@@ -47,6 +47,9 @@ public partial class CinemaDatabaseContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false);
             entity.Property(e => e.CustomerName).HasMaxLength(30);
+            entity.Property(e => e.CustomerPasswordHash)
+                .HasMaxLength(60)
+                .IsUnicode(false);
             entity.Property(e => e.CustomerPhoneNumber)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -58,16 +61,11 @@ public partial class CinemaDatabaseContext : DbContext
 
             entity.HasIndex(e => e.MovieTitle, "UQ_Movie_MovieTitle").IsUnique();
 
-            entity.Property(e => e.MovieId)
-                .HasMaxLength(36)
-                .IsUnicode(false);
+            entity.Property(e => e.MovieId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.MovieCast).HasMaxLength(100);
             entity.Property(e => e.MovieDirector).HasMaxLength(30);
             entity.Property(e => e.MovieGenre).HasMaxLength(20);
             entity.Property(e => e.MovieTitle).HasMaxLength(30);
-            entity.Property(e => e.WorkerId)
-                .HasMaxLength(36)
-                .IsUnicode(false);
 
             entity.HasOne(d => d.Worker).WithMany(p => p.Movies)
                 .HasForeignKey(d => d.WorkerId)
@@ -78,12 +76,7 @@ public partial class CinemaDatabaseContext : DbContext
         {
             entity.ToTable("Screening", "EONIS");
 
-            entity.Property(e => e.ScreeningId)
-                .HasMaxLength(36)
-                .IsUnicode(false);
-            entity.Property(e => e.MovieId)
-                .HasMaxLength(36)
-                .IsUnicode(false);
+            entity.Property(e => e.ScreeningId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.ScreeningRoom)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -97,15 +90,7 @@ public partial class CinemaDatabaseContext : DbContext
         {
             entity.ToTable("Ticket", "EONIS", tb => tb.HasTrigger("CheckCustomerLevel"));
 
-            entity.Property(e => e.TicketId)
-                .HasMaxLength(36)
-                .IsUnicode(false);
-            entity.Property(e => e.CustomerId)
-                .HasMaxLength(36)
-                .IsUnicode(false);
-            entity.Property(e => e.ScreeningId)
-                .HasMaxLength(36)
-                .IsUnicode(false);
+            entity.Property(e => e.TicketId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.TicketPrice).HasColumnType("numeric(18, 0)");
             entity.Property(e => e.TicketSeat)
                 .HasMaxLength(5)
@@ -131,14 +116,15 @@ public partial class CinemaDatabaseContext : DbContext
 
             entity.HasIndex(e => e.WorkerPhoneNumber, "UQ_Worker_WorkerPhoneNumber").IsUnique();
 
-            entity.Property(e => e.WorkerId)
-                .HasMaxLength(36)
-                .IsUnicode(false);
+            entity.Property(e => e.WorkerId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.WorkerCity).HasMaxLength(30);
             entity.Property(e => e.WorkerEmailAdress)
                 .HasMaxLength(30)
                 .IsUnicode(false);
             entity.Property(e => e.WorkerName).HasMaxLength(30);
+            entity.Property(e => e.WorkerPasswordHash)
+                .HasMaxLength(60)
+                .IsUnicode(false);
             entity.Property(e => e.WorkerPhoneNumber)
                 .HasMaxLength(20)
                 .IsUnicode(false);

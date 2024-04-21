@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CinemaBackend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaBackend.Services
 {
@@ -42,8 +43,31 @@ namespace CinemaBackend.Services
             }
         }
 
+        public async Task<Worker> GetWorkerByEmail(String workerEmail)
+        {
+            try
+            {
+                Worker? search = await _dbContext.Workers.FirstOrDefaultAsync(w => w.WorkerEmailAdress == workerEmail);
+
+                if (search == null)
+                    return null!;
+
+                return search;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public async Task<Worker> CreateWorker(Worker worker)
         {
+
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(worker.WorkerPasswordHash);
+
+            worker.WorkerPasswordHash = passwordHash;
+
             var createdWorker = await _dbContext.AddAsync(worker);
 
             await _dbContext.SaveChangesAsync();
