@@ -10,7 +10,6 @@ namespace CinemaBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class MovieController : ControllerBase
     {
         private IMovieService _movieService;
