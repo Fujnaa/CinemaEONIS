@@ -24,6 +24,19 @@ namespace CinemaBackend.Services
             }
         }
 
+        public async Task<List<Movie>> GetMoviesAdmin()
+        {
+            try
+            {
+                return await _dbContext.Movies.ToListAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public async Task<Movie> GetMovieById(Guid movieId)
         {
             try
@@ -46,7 +59,7 @@ namespace CinemaBackend.Services
         {
             try
             {
-                Movie? search = await _dbContext.Movies.FirstOrDefaultAsync(w => w.MovieTitle == movieTitle);
+                Movie? search = await _dbContext.Movies.Include(m => m.Screenings).FirstOrDefaultAsync(w => w.MovieTitle == movieTitle);
 
                 if (search == null)
                     throw new KeyNotFoundException();

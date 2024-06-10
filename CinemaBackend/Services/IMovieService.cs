@@ -6,6 +6,7 @@ namespace CinemaBackend.Services
     {
 
         Task<List<Movie>> GetMovies();
+        Task<List<Movie>> GetMoviesAdmin();
         Task<Movie> GetMovieById(Guid movieId);
         Task<Movie> GetMovieByTitle(String movieTitle);
         Task<Movie> CreateMovie(Movie movie);

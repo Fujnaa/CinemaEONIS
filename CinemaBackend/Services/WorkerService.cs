@@ -24,6 +24,19 @@ namespace CinemaBackend.Services
                 throw new Exception(ex.Message, ex);
             }
         }
+        public async Task<List<Worker>> GetWorkersAdmin()
+        {
+            try
+            {
+                return await _dbContext.Workers.ToListAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
 
         public async Task<Worker> GetWorkerById(Guid workerId)
         {
@@ -63,10 +76,6 @@ namespace CinemaBackend.Services
 
         public async Task<Worker> CreateWorker(Worker worker)
         {
-
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(worker.WorkerPasswordHash);
-
-            worker.WorkerPasswordHash = passwordHash;
 
             var createdWorker = await _dbContext.AddAsync(worker);
 

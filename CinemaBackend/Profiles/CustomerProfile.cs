@@ -8,6 +8,7 @@ namespace CinemaBackend.Profiles
         public CustomerProfile() {
         
             CreateMap<CustomerDto, Customer>().ReverseMap();
+            CreateMap<CustomerAdminDto, Customer>().ReverseMap();
             CreateMap<CustomerCreateDto, Customer>().ReverseMap();
             CreateMap<CustomerUpdateDto, Customer>().ReverseMap();
 

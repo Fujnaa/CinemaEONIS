@@ -1,0 +1,68 @@
+.container{
+    width: 90%;
+    margin: 0 auto;
+    left: 4%;
+    position: absolute;
+    z-index: 3;
+    font-family: 'Roboto Mono';
+
+}
+
+.container::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.logoContainer{
+    float:left;
+    display: flex;
+    padding-top: 5px;
+    align-items: start;
+}
+
+img {
+    height: 75px;
+}
+
+.logoContainer h1 {
+    font-size: 35px;
+    font-weight: 700;
+}
+
+nav {
+    float: right;
+}
+
+nav ul {
+    margin:0;
+    padding:0;
+    list-style: none;
+}
+
+nav li {
+    display: inline-block;
+    margin-left: 70px;
+    font-size: 20px;
+    padding-top: 45px;
+    text-transform: uppercase;
+
+    position: relative;
+}
+
+nav a::after {
+    content: '';
+    z-index: -1;
+    display: block;
+    position: absolute;
+    height: 8px;
+    width: 0%;
+    bottom:-1px;
+    background-color: rgb(100, 56, 100);
+    transition: all ease-in-out 250ms;
+}
+
+nav a:hover::after {
+    width: 100%;
+    
+}

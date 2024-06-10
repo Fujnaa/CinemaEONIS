@@ -6,6 +6,7 @@ namespace CinemaBackend.Services
     {
 
         Task<List<Screening>> GetScreenings();
+        Task<List<Screening>> GetScreeningsAdmin();
         Task<Screening> GetScreeningById(Guid screeningId);
         Task<Screening> GetScreeningByDate(DateOnly screeningDate);
         Task<Screening> CreateScreening(Screening screening);

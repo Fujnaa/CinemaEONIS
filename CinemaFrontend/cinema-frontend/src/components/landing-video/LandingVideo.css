@@ -1,0 +1,22 @@
+.playerContainer{
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    
+}
+
+.videoPlayer {
+    position: absolute;
+    top:-35px;
+}
+
+
+.videoPlayer::after{
+    content: '';
+    display: block;
+    z-index: 2;
+    position: absolute;
+    height:100%;
+    width: 100%;
+    bottom: 0;
+}

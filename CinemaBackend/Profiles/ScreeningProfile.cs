@@ -8,6 +8,7 @@ namespace CinemaBackend.Profiles
         public ScreeningProfile() {
         
             CreateMap<ScreeningDto, Screening>().ReverseMap();
+            CreateMap<ScreeningAdminDto, Screening>().ReverseMap();
             CreateMap<ScreeningCreateDto, Screening>().ReverseMap();
             CreateMap<ScreeningUpdateDto, Screening>().ReverseMap();
 

@@ -48,6 +48,35 @@ namespace CinemaBackend.Controllers
 
         }
 
+        [HttpGet("Admin")]
+        [Authorize(Roles = "Worker")]
+        public async Task<ActionResult<List<WorkerAdminDto>>> GetWorkersAdmin()
+        {
+            try
+            {
+                List<Worker> workers = await _workerService.GetWorkersAdmin();
+
+                if (workers == null || workers.Count == 0)
+                    return NoContent();
+
+                List<WorkerAdminDto> workersDto = new List<WorkerAdminDto>();
+
+                foreach (var worker in workers)
+                {
+                    var workerDto = _mapper.Map<WorkerAdminDto>(worker);
+                    workersDto.Add(workerDto);
+                }
+
+                return Ok(workersDto);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+
+            }
+
+        }
+
         [HttpGet("{workerId}")]
         public async Task<ActionResult<WorkerDto>> GetWorkerById(Guid workerId)
         {

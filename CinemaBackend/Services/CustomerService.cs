@@ -28,6 +28,19 @@ namespace CinemaBackend.Services
             }
         }
 
+        public async Task<List<Customer>> GetCustomersAdmin()
+        {
+            try
+            {
+                return await _dbContext.Customers.ToListAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public async Task<Customer> GetCustomerById(Guid customerId)
         {
             try
@@ -66,10 +79,6 @@ namespace CinemaBackend.Services
 
         public async Task<Customer> CreateCustomer(Customer customer)
         {
-
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(customer.CustomerPasswordHash);
-
-            customer.CustomerPasswordHash = passwordHash;
 
             var createdCustomer = await _dbContext.AddAsync(customer);
 

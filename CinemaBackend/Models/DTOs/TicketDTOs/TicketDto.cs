@@ -11,7 +11,6 @@
 
         public virtual Customer? Customer { get; set; }
 
-        public virtual Screening? Screening { get; set; }
 
     }
 }

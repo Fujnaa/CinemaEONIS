@@ -12,12 +12,14 @@ namespace CinemaBackend.Controllers
     public class TicketController : ControllerBase
     {
         private ITicketService _ticketService;
+        private ICustomerService _customerService;
         private readonly IMapper _mapper;
 
-        public TicketController(ITicketService ticketService, IMapper mapper)
+        public TicketController(ITicketService ticketService, IMapper mapper, ICustomerService customerService)
         {
             _ticketService = ticketService;
             _mapper = mapper;
+            _customerService = customerService;
         }
 
         [HttpGet]
@@ -36,6 +38,35 @@ namespace CinemaBackend.Controllers
                 foreach(var  ticket in tickets)
                 {
                     var ticketDto = _mapper.Map<TicketDto>(ticket);
+                    ticketsDto.Add(ticketDto);
+                }
+
+                return Ok(ticketsDto);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+
+            }
+
+        }
+
+        [HttpGet("Admin")]
+        [Authorize(Roles = "Worker")]
+        public async Task<ActionResult<List<TicketAdminDto>>> GetTicketsAdmin()
+        {
+            try
+            {
+                List<Ticket> tickets = await _ticketService.GetTickets();
+
+                if (tickets == null || tickets.Count == 0)
+                    return NoContent();
+
+                List<TicketAdminDto> ticketsDto = new List<TicketAdminDto>();
+
+                foreach (var ticket in tickets)
+                {
+                    var ticketDto = _mapper.Map<TicketAdminDto>(ticket);
                     ticketsDto.Add(ticketDto);
                 }
 
@@ -78,7 +109,13 @@ namespace CinemaBackend.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                Ticket toCreate = _mapper.Map<Ticket>(ticket);
+                Ticket toCreate = new Ticket();
+
+                toCreate.TicketPrice = ticket.TicketPrice;
+                toCreate.TicketSeat = ticket.TicketSeat;
+                toCreate.TicketType = ticket.TicketType;
+                toCreate.CustomerId = _customerService.GetCustomerByEmail(ticket.CustomerEmail!).Result.CustomerId;
+                toCreate.ScreeningId = ticket.ScreeningId;
 
                 Ticket createdTicket = await _ticketService.CreateTicket(toCreate);
 

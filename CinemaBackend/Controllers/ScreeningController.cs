@@ -47,6 +47,35 @@ namespace CinemaBackend.Controllers
 
         }
 
+        [HttpGet("Admin")]
+        [Authorize(Roles = "Worker")]
+        public async Task<ActionResult<List<ScreeningAdminDto>>> GetScreeningsAdmin()
+        {
+            try
+            {
+                List<Screening> screenings = await _screeningService.GetScreeningsAdmin();
+
+                if (screenings == null || screenings.Count == 0)
+                    return NoContent();
+
+                List<ScreeningAdminDto> screeningsDto = new List<ScreeningAdminDto>();
+
+                foreach (var screening in screenings)
+                {
+                    ScreeningAdminDto screeningDto = _mapper.Map<ScreeningAdminDto>(screening);
+                    screeningsDto.Add(screeningDto);
+                }
+
+                return Ok(screeningsDto);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+
+            }
+
+        }
+
         [HttpGet("{screeningId}")]
         public async Task<ActionResult<ScreeningDto>> GetScreeningById(Guid screeningId)
         {

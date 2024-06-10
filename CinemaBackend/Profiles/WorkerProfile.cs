@@ -8,6 +8,7 @@ namespace CinemaBackend.Profiles
         public WorkerProfile() {
 
             CreateMap<WorkerDto, Worker>().ReverseMap();
+            CreateMap<WorkerAdminDto, Worker>().ReverseMap();
             CreateMap<WorkerCreateDto, Worker>().ReverseMap();
             CreateMap<WorkerUpdateDto, Worker>().ReverseMap();
 

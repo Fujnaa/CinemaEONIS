@@ -10,7 +10,7 @@
 
         public Guid? ScreeningId { get; set; }
 
-        public Guid? CustomerId { get; set; }
+        public string? CustomerEmail { get; set; }
 
     }
 }

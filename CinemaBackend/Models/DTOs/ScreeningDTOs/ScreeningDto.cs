@@ -1,7 +1,10 @@
-﻿namespace CinemaBackend.Models.DTOs.ScreeningDTOs
+﻿using CinemaBackend.Models.DTOs.TicketDTOs;
+
+namespace CinemaBackend.Models.DTOs.ScreeningDTOs
 {
     public class ScreeningDto
     {
+
         public DateOnly ScreeningDate { get; set; }
 
         public string ScreeningRoom { get; set; } = null!;
@@ -10,9 +13,7 @@
 
         public TimeOnly? ScreeningEnd { get; set; }
 
-        public virtual Movie? Movie { get; set; }
-
-        public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+        public virtual ICollection<TicketDto> Tickets { get; set; } = new List<TicketDto>();
 
     }
 }

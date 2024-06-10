@@ -63,9 +63,13 @@ public partial class CinemaDatabaseContext : DbContext
 
             entity.Property(e => e.MovieId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.MovieCast).HasMaxLength(100);
+            entity.Property(e => e.MovieDesc).HasMaxLength(150);
             entity.Property(e => e.MovieDirector).HasMaxLength(30);
             entity.Property(e => e.MovieGenre).HasMaxLength(20);
+            entity.Property(e => e.MovieLength).HasColumnType("numeric(18, 0)");
+            entity.Property(e => e.MoviePoster).HasMaxLength(200);
             entity.Property(e => e.MovieTitle).HasMaxLength(30);
+            entity.Property(e => e.MovieTrailer).HasMaxLength(150);
 
             entity.HasOne(d => d.Worker).WithMany(p => p.Movies)
                 .HasForeignKey(d => d.WorkerId)

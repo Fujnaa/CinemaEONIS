@@ -16,6 +16,19 @@ namespace CinemaBackend.Services
         {
             try
             {
+                return await _dbContext.Tickets.Include(t => t.Screening).ToListAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public async Task<List<Ticket>> GetTicketsAdmin()
+        {
+            try
+            {
                 return await _dbContext.Tickets.ToListAsync();
 
             }
@@ -29,7 +42,7 @@ namespace CinemaBackend.Services
         {
             try
             {
-                Ticket? search = await _dbContext.Tickets.FirstOrDefaultAsync(w => w.TicketId == ticketId);
+                Ticket? search = await _dbContext.Tickets.Include(t => t.Screening).FirstOrDefaultAsync(w => w.TicketId == ticketId);
 
                 if (search == null)
                     throw new KeyNotFoundException();

@@ -8,6 +8,7 @@ namespace CinemaBackend.Profiles
         public TicketProfile() {
         
             CreateMap<TicketDto, Ticket>().ReverseMap();
+            CreateMap<TicketAdminDto, Ticket>().ReverseMap();
             CreateMap<TicketCreateDto, Ticket>().ReverseMap();
             CreateMap<TicketUpdateDto, Ticket>().ReverseMap();
 

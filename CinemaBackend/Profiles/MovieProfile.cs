@@ -8,6 +8,7 @@ namespace CinemaBackend.Profiles
         public MovieProfile() {
 
             CreateMap<MovieDto, Movie>().ReverseMap();
+            CreateMap<MovieAdminDto, Movie>().ReverseMap();
             CreateMap<MovieCreateDto, Movie>().ReverseMap();
             CreateMap<MovieUpdateDto, Movie>().ReverseMap();
 

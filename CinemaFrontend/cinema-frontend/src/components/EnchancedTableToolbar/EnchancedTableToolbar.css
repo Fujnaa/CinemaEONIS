@@ -1,0 +1,13 @@
+.toolbar {
+    background-color: #221b38;
+    color: #f8f8f8;
+    font-family: 'Poppins';
+}
+
+#tableTitle {
+    font-family: 'Poppins';
+}
+
+.tooltip {
+    color: #f8f8f8;
+}

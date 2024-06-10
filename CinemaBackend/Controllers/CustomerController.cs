@@ -50,6 +50,36 @@ namespace CinemaBackend.Controllers
 
         }
 
+        [HttpGet("Admin")]
+        public async Task<ActionResult<List<CustomerAdminDto>>> GetCustomersAdmin()
+        {
+            try
+            {
+                List<Customer> customers = await _customerService.GetCustomersAdmin();
+
+                if (customers == null || customers.Count == 0)
+                    return NoContent();
+
+                List<CustomerAdminDto> customersDto = new List<CustomerAdminDto>();
+
+                foreach (var customer in customers)
+                {
+
+                    CustomerAdminDto customerDto = _mapper.Map<CustomerAdminDto>(customer);
+                    customersDto.Add(customerDto);
+
+                }
+
+                return Ok(customersDto);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+
+            }
+
+        }
+
         [HttpGet("{customerId}")]
         public async Task<ActionResult<CustomerDto>> GetCustomerById(Guid customerId)
         {

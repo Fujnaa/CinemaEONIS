@@ -1,9 +1,11 @@
-﻿using CinemaBackend.Models.DTOs.CustomerDTOs;
+﻿using CinemaBackend.Models;
+using CinemaBackend.Models.DTOs.CustomerDTOs;
 using CinemaBackend.Models.DTOs.UserDTOs;
 using CinemaBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Text;
 
@@ -24,6 +26,28 @@ namespace CinemaBackend.Controllers
             _configuration = configuration;
             _customerService = customerService;
             _workerService = workerService;
+        }
+
+        [HttpGet("hashPasswords")]
+        public async Task<ActionResult<List<Customer>>> HashPasswords()
+        {
+            List<Customer> customers = await _customerService.GetCustomers();
+
+            foreach (Customer customer in customers)
+            {
+                customer.CustomerPasswordHash = BCrypt.Net.BCrypt.HashPassword(customer.CustomerPasswordHash);
+                await _customerService.UpdateCustomer(customer);
+            }
+
+            List<Worker> workers = await _workerService.GetWorkers();
+
+            foreach (Worker worker in workers)
+            {
+                worker.WorkerPasswordHash = BCrypt.Net.BCrypt.HashPassword(worker.WorkerPasswordHash);
+                await _workerService.UpdateWorker(worker);
+            }
+
+            return customers;
         }
 
         [HttpPost("register")]
@@ -96,6 +120,7 @@ namespace CinemaBackend.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.UserEmailAdress),
+                new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Role, role)
             };
 

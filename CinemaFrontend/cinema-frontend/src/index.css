@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+:root {
+  font-family:'Poppins';
+  font-weight: 400;
+  font-style: normal;
+
+  color-scheme: light dark;
+  color: #f8f8f8;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #f8f8f8;
+  text-decoration: inherit;
+}
+
+body {
+  margin: 0;
+  color: #D1D7E1;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: hsla(254, 22%, 20%, 1);
+
+  background: linear-gradient(90deg, hsla(254, 22%, 20%, 1) 0%, hsla(254, 31%, 22%, 1) 100%);
+
+  background: -moz-linear-gradient(90deg, hsla(254, 22%, 20%, 1) 0%, hsla(254, 31%, 22%, 1) 100%);
+
+  background: -webkit-linear-gradient(90deg, hsla(254, 22%, 20%, 1) 0%, hsla(254, 31%, 22%, 1) 100%);
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#2D283E", endColorstr="#2F274A", GradientType=1 );
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  white-space: pre;
+  font-size: 50px;
+  line-height: 1.2em;
+  height:1.2em;
+  overflow: hidden;
+}
+.loader:before {
+  content:"Loading...\A⌰oading...\A⌰⍜ading...\A⌰⍜⏃ding...\A⌰⍜⏃⎅ing...\A⌰⍜⏃⎅⟟ng...\A⌰⍜⏃⎅⟟⋏g...\A⌰⍜⏃⎅⟟⋏☌...\A⌰⍜⏃⎅⟟⋏☌⟒..\A⌰⍜⏃⎅⟟⋏☌⟒⏁.\A⌰⍜⏃⎅⟟⋏☌⟒⏁⋔"; 
+  white-space: pre;
+  display: inline-block;
+  animation: l39 1s infinite steps(11) alternate;
+}
+
+@keyframes l39 {
+  100%{transform: translateY(-100%)}
+}
